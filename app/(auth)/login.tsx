@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput,Image } from 'react-native';
 import { Link } from 'expo-router';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ export default function Login() {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
+       <Image source={require('../../assets/png/Ilustração-cadastro.png') }  />
       <Text style={{ fontSize: 24, marginBottom: 16 }}>Login</Text>
 
       <TextInput 
@@ -36,7 +37,7 @@ export default function Login() {
         
         const isAuthenticated = login(email, password)
         if (isAuthenticated) {
-          router.replace('/(protected)/profile') 
+          router.replace('/(protected)/dashboard') 
         }
 
       }} />
