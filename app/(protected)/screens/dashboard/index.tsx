@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, ScrollView, useWindowDimensions } from "react-native";
 import CardComponent from "@/app/components/card-center";
 import TransactionCard from "@/app/components/card-new-transaction";
+import CarExtrato from "@/app/components/card-extrato";
 
 export default function Index() {
   const { width, height } = useWindowDimensions();
@@ -11,6 +12,7 @@ export default function Index() {
       <View style={styles.container}>
         <CardComponent />
         <TransactionCard />
+        <CarExtrato/>
       </View>
     </ScrollView>
   );

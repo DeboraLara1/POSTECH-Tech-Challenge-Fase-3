@@ -1,4 +1,5 @@
 import CardComponent from '@/app/components/card-center';
+import CardExtrato from '@/app/components/card-extrato';
 import InvestmentStats from '@/app/components/card-investments';
 import React from 'react';
 import { ScrollView, SafeAreaView, StyleSheet } from 'react-native';
@@ -9,6 +10,7 @@ const Index = () => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <CardComponent/>
         <InvestmentStats />
+        <CardExtrato/>
       </ScrollView>
     </SafeAreaView>
   );

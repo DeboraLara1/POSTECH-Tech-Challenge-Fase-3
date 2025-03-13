@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     position: "relative",
     overflow: "hidden",
+    marginBottom: 10,
   },
   cardContent: {
     display: "flex",

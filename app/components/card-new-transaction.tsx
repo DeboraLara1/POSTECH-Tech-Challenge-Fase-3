@@ -79,10 +79,11 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 8,
     backgroundColor: "#cbcbcb",
-    marginTop: 34,
+    marginTop: 24,
     position: "relative",
     overflow: "hidden",
     padding: 20,
+    marginBottom: 24,
   },
   contentCard: {
     justifyContent: "center",

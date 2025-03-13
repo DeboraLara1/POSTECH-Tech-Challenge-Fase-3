@@ -6,9 +6,7 @@ const CardComponent = () => {
 
   return (
     <View style={[styles.card, { height: height * 0.5 }]}>
-      {/* Conteúdo principal */}
       <View style={[styles.contentCard, width < 472 && styles.contentCardColumn]}>
-        {/* Parte esquerda */}
         <View style={styles.contentOne}>
           <Text style={[styles.greeting, { fontSize: width * 0.06 }]}>
             Olá, Joana! :)
@@ -18,7 +16,6 @@ const CardComponent = () => {
           </Text>
         </View>
 
-        {/* Parte direita */}
         <View style={[styles.contentTwo, { width: width < 472 ? "100%" : "40%" }]}>
           <View style={styles.saldoContainer}>
             <Text style={[styles.saldoText, { fontSize: width * 0.05 }]}>Saldo</Text>
@@ -35,7 +32,6 @@ const CardComponent = () => {
         </View>
       </View>
 
-      {/* Marca d'água */}
       <Image
         source={require("../../assets/png/Ilustração1.png")}
         style={[
@@ -60,6 +56,7 @@ const CardComponent = () => {
 
 const styles = StyleSheet.create({
   card: {
+    width:360,
     borderRadius: 8,
     backgroundColor: "#004d61",
     padding: 20,

@@ -1,16 +1,19 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ImageSourcePropType } from 'react-native';
+
+// Obtendo as dimensões da tela
+const { width } = Dimensions.get('window');
 
 type CardSmallProps = {
-  iconCard: string;
+  imageSource: ImageSourcePropType;
   titleCardSmall: string;
   onCardClick: () => void;
 };
 
-const CardSmall: React.FC<CardSmallProps> = ({ iconCard, titleCardSmall, onCardClick }) => {
+const CardSmall: React.FC<CardSmallProps> = ({ imageSource, titleCardSmall, onCardClick }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onCardClick}>
-      <Image source={{ uri: iconCard }} style={styles.iconCardSmall} />
+      <Image source={imageSource} style={styles.iconCardSmall} resizeMode="contain" />
       <View style={styles.cardBody}>
         <Text style={styles.cardTitle}>{titleCardSmall}</Text>
       </View>
@@ -18,29 +21,28 @@ const CardSmall: React.FC<CardSmallProps> = ({ iconCard, titleCardSmall, onCardC
   );
 };
 
-const styles = StyleSheet.create<{ card: ViewStyle; iconCardSmall: ImageStyle; cardBody: ViewStyle; cardTitle: TextStyle }>({
+const styles = StyleSheet.create({
   card: {
-    display: 'flex',
+    width: width * 0.45, // 45% da largura da tela
+    height: width * 0.45, // Mantendo um formato quadrado proporcional
     alignItems: 'center',
     justifyContent: 'center',
-    width: 162,
-    height: 157,
-    margin: 20,
-    zIndex: 2,
+    margin: width * 0.05, // Margem de 5% da largura da tela
     backgroundColor: '#fff',
     borderRadius: 10,
     elevation: 3,
   },
   iconCardSmall: {
-    marginTop: 20,
-    width: 60,
-    height: 60,
+    width: '40%', // 40% do tamanho do card
+    height: '40%',
+    marginTop: '10%',
   },
   cardBody: {
-    marginTop: 10,
+    marginTop: '5%',
+    width: '80%', // 80% da largura do card para o texto não ficar muito largo
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: width * 0.04, // Texto responsivo baseado na largura da tela
     fontWeight: 'bold',
     textAlign: 'center',
   },

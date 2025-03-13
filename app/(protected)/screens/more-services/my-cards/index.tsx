@@ -1,15 +1,17 @@
-import CardComponent from '@/app/components/card-center';
-import InvestmentStats from '@/app/components/card-investments';
-import MyCardScreen from '@/app/components/card-my-card';
-import React from 'react';
-import { ScrollView, SafeAreaView, StyleSheet } from 'react-native';
+import CardComponent from "@/app/components/card-center";
+import CardExtrato from "@/app/components/card-extrato";
+import InvestmentStats from "@/app/components/card-investments";
+import MyCardScreen from "@/app/components/card-my-card";
+import React from "react";
+import { ScrollView, SafeAreaView, StyleSheet } from "react-native";
 
 const Index = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <CardComponent/>
-        <MyCardScreen/>
+        <CardComponent />
+        <MyCardScreen />
+        <CardExtrato /> 
       </ScrollView>
     </SafeAreaView>
   );
@@ -18,10 +20,10 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   scrollView: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 20,
   },
 });
