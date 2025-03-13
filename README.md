@@ -1,50 +1,77 @@
-# Welcome to your Expo app 👋
+# React Native Firebase Auth
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este projeto é um aplicativo mobile desenvolvido em React Native com integração ao Firebase para autenticação de usuários. 
 
-## Get started
+## 🚀 Tecnologias
 
-1. Install dependencies
+Este projeto foi desenvolvido com as seguintes tecnologias:
 
-   ```bash
-   npm install
-   ```
+- React Native
+- Firebase Authentication
+- Expo 
+- TypeScript 
 
-2. Start the app
+## 📋 Funcionalidades
 
-   ```bash
-    npx expo start
-   ```
+- Cadastro de usuários
+- Login com e-mail e senha
+- Logout
 
-In the output, you'll find options to open the app in a
+## ⚙️ Pré-requisitos
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Antes de começar, você precisará ter instalado em sua máquina as seguintes ferramentas:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- [Node.js](https://nodejs.org/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (caso use Expo)
+- [Firebase Console](https://console.firebase.google.com/)
 
-## Get a fresh project
+## 🔧 Configuração do Firebase
 
-When you're ready, run:
+1. Acesse o [Firebase Console](https://console.firebase.google.com/).
+2. Crie um novo projeto.
+3. No menu "Authentication", ative o provedor de login desejado (E-mail/Senha, Google, etc.).
+4. No menu "Configurações do projeto" > "Configuração do SDK", copie as credenciais do Firebase.
+5. Caso necessario atualize suas credenciais no arquivo firebase/authContext.tsx:
 
-```bash
-npm run reset-project
+```
+API_KEY=SEU_API_KEY
+AUTH_DOMAIN=SEU_AUTH_DOMAIN
+PROJECT_ID=SEU_PROJECT_ID
+STORAGE_BUCKET=SEU_STORAGE_BUCKET
+MESSAGING_SENDER_ID=SEU_MESSAGING_SENDER_ID
+APP_ID=SEU_APP_ID
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📦 Instalação e execução
 
-## Learn more
+1. Clone o repositório:
+   ```sh
+   git clone https://github.com/DeboraLara1/POSTECH-Tech-Challenge-Fase-3.git
 
-To learn more about developing your project with Expo, look at the following resources:
+   cd seu-repositorio
+   ```
+2. Instale as dependências:
+   ```sh
+   npm install  
+   ```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📜 Estrutura do Projeto
+```
+📂 app
+ ┣ 📂 components  # Componentes reutilizáveis
+ ┣ 📂 app/(auth)  # Telas sem proteção do aplicativo 
+ ┣ 📂 (protected) # Telas protegidas do aplicativo 
+ ┣ 📂 firebase    # Integração com Firebase
+ ┣ 📂 context     # Context API para gerenciar autenticação
+ ┣ 📂 hooks       # Estilos padrao
+ ┣ 📂 assets      # Imagens e ícones
+```
 
-## Join the community
+### 5. Execute cada Projeto
+Execute cada projeto com o seguinte comando:
+```bash
+npm start
+```
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Observação: 
+- Necessario ter um emulador da sua preferencia na sua máquina rodando
