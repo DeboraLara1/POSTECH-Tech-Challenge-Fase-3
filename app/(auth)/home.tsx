@@ -15,10 +15,10 @@ import Header from "@/app/components/header";
 const { width, height } = Dimensions.get("window");
 
 const vantagensImages = [
-  require("../../../../assets/img/Vantagem 1.png"),
-  require("../../../../assets/img/Vantagem 2.png"),
-  require("../../../../assets/img/Vantagem 3.png"),
-  require("../../../../assets/img/Vantagem 4.png"),
+  require("../../assets/img/Vantagem 1.png"),
+  require("../../assets/img/Vantagem 2.png"),
+  require("../../assets/img/Vantagem 3.png"),
+  require("../../assets/img/Vantagem 4.png"),
 ];
 
 const Index = () => {
@@ -27,23 +27,21 @@ const Index = () => {
       <Header />
       <View style={styles.content}>
         <ImageBackground
-          source={require("../../../../assets/img/background-home.png")}
+          source={require("../../assets/img/background-home.png")}
           style={styles.background}
         >
           <ScrollView contentContainerStyle={styles.scrollContainer}>
-            {/* Banner */}
             <View style={styles.banner}>
               <Text style={styles.title}>
                 Experimente mais liberdade no controle da sua vida financeira.
                 Crie sua conta com a gente!
               </Text>
               <Image
-                source={require("../../../../assets/img/ilustração-banner.png")}
+                source={require("../../assets/img/ilustração-banner.png")}
                 style={styles.illustration}
               />
             </View>
 
-            {/* Vantagens */}
             <View style={styles.vantagens}>
               <Text style={styles.subtitle}>Vantagens do nosso banco:</Text>
               {vantagensImages.map((image, index) => (
