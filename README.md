@@ -1,6 +1,6 @@
 # React Native Firebase Auth
 
-Este projeto é um aplicativo mobile desenvolvido em React Native com integração ao Firebase para autenticação de usuários. 
+Este projeto é um aplicativo mobile desenvolvido em React Native com integração ao Firebase para autenticação de usuários e utilizado AsyncStorage para adicionar, editar transações realizadas. 
 
 ## 🚀 Tecnologias
 
