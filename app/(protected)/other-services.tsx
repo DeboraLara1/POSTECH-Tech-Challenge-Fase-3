@@ -1,38 +1,28 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
-import CardComponent from "@/app/components/card-center";
-import ServicesCard from "@/app/components/card-services-available";
-import CardExtrato from "@/app/components/card-extrato";
+import CardCenter from "../../app/components/cards/CardCenter";
+import CardExtrato from "../../app/components/cards/CardExtrato";
+import { ScrollView, SafeAreaView, StyleSheet } from "react-native";
 
-const { width, height } = Dimensions.get("window");
-
-const Index = () => {
+const OtherServices = () => {
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.container}>
-        <CardComponent />
-        <ServicesCard />
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <CardCenter />
         <CardExtrato />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: height * 0.02,
-  },
   container: {
-    width: "100%",
-    paddingHorizontal: width * 0.05,
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  scrollView: {
     alignItems: "center",
+    paddingVertical: 20,
   },
 });
 
-export default Index;
+export default OtherServices;

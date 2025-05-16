@@ -1,46 +1,70 @@
-import { View, Text } from 'react-native';
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
-import React from 'react';
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Drawer } from "expo-router/drawer";
+import { useEffect, useState } from 'react';
+import { router } from 'expo-router';
+import Header from '../components/layout/Header';
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
+
 export default function ProtectedLayout() {
   const { isAuthenticated } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simula um tempo de carregamento para evitar redirecionamentos imediatos
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (!isAuthenticated) {
+        router.replace('/login');
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [isAuthenticated]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#004d61" />
+        <Text style={styles.loadingText}>Carregando...</Text>
+      </View>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;
   }
 
   return (
-    // usar para o menu sanduiche
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer>
-        <Drawer.Screen
-          name="home"
-          options={{
-            drawerLabel: "Home",
+    <View style={styles.container}>
+      <Header />
+      <View style={styles.content}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
           }}
         />
-         <Drawer.Screen
-          name="dashboard"
-          options={{
-            drawerLabel: "Dashboard",
-          }}
-        />
-        <Drawer.Screen
-          name="login"
-          options={{
-            drawerLabel: "Login",
-          }}
-        />
-
-        <Drawer.Screen
-          name="contact"
-          options={{
-            drawerLabel: "Contato",
-          }}
-        />
-      </Drawer>
-    </GestureHandlerRootView>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  content: {
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#004d61',
+  }
+});

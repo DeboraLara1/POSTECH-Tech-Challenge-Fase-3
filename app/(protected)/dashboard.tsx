@@ -15,36 +15,33 @@
   router.replace('/(auth)/login') 
 }} /> */}
 import React from "react";
-import { View, StyleSheet, ScrollView, useWindowDimensions } from "react-native";
-import CardComponent from "@/app/components/card-center";
-import TransactionCard from "@/app/components/card-new-transaction";
-import CarExtrato from "@/app/components/card-extrato";
+import { ScrollView, SafeAreaView, StyleSheet } from "react-native";
+import CardCenter from "../components/cards/CardCenter";
+import CardNewTransaction from "../components/cards/CardNewTransaction";
+import CardExtrato from "../components/cards/CardExtrato";
 
-export default function Index() {
-  const { width, height } = useWindowDimensions();
-
+const Dashboard = () => {
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <CardComponent />
-        <TransactionCard />
-        <CarExtrato/>
-      </View>
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <CardCenter />
+        <CardNewTransaction />
+        <CardExtrato />
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1, 
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 20, 
-  },
   container: {
-    width: "100%",
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  scrollView: {
     alignItems: "center",
-    paddingHorizontal: "5%",
+    paddingVertical: 20,
   },
 });
+
+export default Dashboard;
 

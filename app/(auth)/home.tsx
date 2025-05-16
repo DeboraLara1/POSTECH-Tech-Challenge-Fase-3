@@ -9,8 +9,8 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
-import Footer from "@/app/components/footer";
-import Header from "@/app/components/header";
+import Footer from "../../app/components/layout/Footer";
+import Header from "../../app/components/layout/Header";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,7 +21,7 @@ const vantagensImages = [
   require("../../assets/img/Vantagem 4.png"),
 ];
 
-const Index = () => {
+const Home = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header />
@@ -113,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Index;
+export default Home;

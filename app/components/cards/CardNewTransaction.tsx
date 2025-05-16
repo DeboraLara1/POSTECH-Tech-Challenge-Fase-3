@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -13,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import * as DocumentPicker from "expo-document-picker";
 
-const TransactionCard = () => {
+const CardNewTransaction = () => {
   const { width } = useWindowDimensions();
   const [selectedTransaction, setSelectedTransaction] = useState("");
   const [transactionValue, setTransactionValue] = useState("");
@@ -40,8 +39,6 @@ const TransactionCard = () => {
 
       transactions.push(transaction);
       await AsyncStorage.setItem("transactions", JSON.stringify(transactions));
-
-      console.log("Transações após salvar:", transactions);
 
       Alert.alert("Transação", "Transação registrada com sucesso!");
       setSelectedTransaction("");
@@ -133,6 +130,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     padding: 20,
     marginBottom: 24,
+    width: '95%',
+    alignSelf: 'center',
   },
   contentCard: {
     justifyContent: "center",
@@ -142,9 +141,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 32,
   },
   titleCard: {
-    color: "#dee9ea",
+    color: "#004d61",
     fontSize: 25,
     marginBottom: 20,
+    fontWeight: "bold",
   },
   pickerContainer: {
     borderWidth: 1,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   valorTransaction: {
     fontSize: 16,
-    color: "#dee9ea",
+    color: "#004d61",
   },
   transaction: {
     width: 255,
@@ -211,4 +211,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TransactionCard;
+export default CardNewTransaction; 
