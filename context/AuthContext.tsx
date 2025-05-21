@@ -5,7 +5,8 @@ import {
   signInWithEmailAndPassword,
   UserCredential,
 } from "firebase/auth";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+import * as SecureStore from 'expo-secure-store';
 
 interface IAuthContext {
   user: UserCredential | null;
@@ -21,6 +22,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserCredential | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  useEffect(() => {
+    const checkStoredUser = async () => {
+      const storedUid = await SecureStore.getItemAsync('userUid');
+      if (storedUid) {
+        setIsAuthenticated(true);
+      }
+    };
+    checkStoredUser();
+  }, []);
+
   const login = async (email: string, password: string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -30,8 +41,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       setUser(userCredential);
       setIsAuthenticated(true);
+      await SecureStore.setItemAsync('userUid', userCredential.user.uid);
       console.log("AuthProvider :: login - usuário cadastrado com sucesso", userCredential );
-
       return true;
     } catch (error) {
       return false;
@@ -49,11 +60,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  const logout = () => {
+  const logout = async () => {
     console.log("AuthProvider :: logout - usuário deslogado com sucesso");
     auth.signOut();
     setUser(null);
     setIsAuthenticated(false);
+    await SecureStore.deleteItemAsync('userUid');
   };
 
   return (
