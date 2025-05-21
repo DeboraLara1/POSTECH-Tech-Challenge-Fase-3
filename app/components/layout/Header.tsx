@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, useWindowDi
 import { useAuth } from '../../../context/AuthContext';
 
 const Header: React.FC = () => {
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [menuVisible, setMenuVisible] = useState(false);
@@ -17,7 +17,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    router.replace('/login');
+    router.replace('/home');
   };
 
   const toggleMenu = () => {
@@ -29,6 +29,41 @@ const Header: React.FC = () => {
     setMenuVisible(false);
   };
 
+  const renderAuthenticatedMenu = () => (
+    <>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/dashboard')}>
+        <Text style={styles.menuItemText}>Home</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/minha-conta')}>
+        <Text style={styles.menuItemText}>Minha Conta</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/investments')}>
+        <Text style={styles.menuItemText}>Investimentos</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/meus-cartoes')}>
+        <Text style={styles.menuItemText}>Meus Cartões</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={[styles.menuItem, styles.logoutMenuItem]} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Sair</Text>
+      </TouchableOpacity>
+    </>
+  );
+
+  const renderUnauthenticatedMenu = () => (
+    <>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/login')}>
+        <Text style={styles.menuItemText}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/signup')}>
+        <Text style={styles.menuItemText}>Criar Conta</Text>
+      </TouchableOpacity>
+    </>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -38,27 +73,51 @@ const Header: React.FC = () => {
 
       {!isMobile && (
         <View style={styles.navContainer}>
-          <Link href="/minha-conta" asChild>
-            <TouchableOpacity style={[styles.navItem, pathname === '/minha-conta' && styles.activeNavItem]}>
-              <Text style={[styles.navText, pathname === '/minha-conta' && styles.activeNavText]}>Minha Conta</Text>
-            </TouchableOpacity>
-          </Link>
-          
-          <Link href="/investments" asChild>
-            <TouchableOpacity style={[styles.navItem, pathname === '/investments' && styles.activeNavItem]}>
-              <Text style={[styles.navText, pathname === '/investments' && styles.activeNavText]}>Investimentos</Text>
-            </TouchableOpacity>
-          </Link>
-          
-          <Link href="/meus-cartoes" asChild>
-            <TouchableOpacity style={[styles.navItem, pathname === '/meus-cartoes' && styles.activeNavItem]}>
-              <Text style={[styles.navText, pathname === '/meus-cartoes' && styles.activeNavText]}>Meus Cartões</Text>
-            </TouchableOpacity>
-          </Link>
-          
-          <TouchableOpacity style={styles.navItem} onPress={handleLogout}>
-            <Text style={styles.navText}>Sair</Text>
-          </TouchableOpacity>
+          {isAuthenticated ? (
+            <>
+              <Link href="/minha-conta" asChild>
+                <TouchableOpacity style={[styles.navItem, pathname === '/minha-conta' && styles.activeNavItem]}>
+                  <Text style={[styles.navText, pathname === '/minha-conta' && styles.activeNavText]}>Minha Conta</Text>
+                </TouchableOpacity>
+              </Link>
+              
+              <Link href="/investments" asChild>
+                <TouchableOpacity style={[styles.navItem, pathname === '/investments' && styles.activeNavItem]}>
+                  <Text style={[styles.navText, pathname === '/investments' && styles.activeNavText]}>Investimentos</Text>
+                </TouchableOpacity>
+              </Link>
+              
+              <Link href="/meus-cartoes" asChild>
+                <TouchableOpacity style={[styles.navItem, pathname === '/meus-cartoes' && styles.activeNavItem]}>
+                  <Text style={[styles.navText, pathname === '/meus-cartoes' && styles.activeNavText]}>Meus Cartões</Text>
+                </TouchableOpacity>
+              </Link>
+              
+              <TouchableOpacity style={styles.navItem} onPress={handleLogout}>
+                <Text style={styles.navText}>Sair</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <Link href="/home" asChild>
+                <TouchableOpacity style={[styles.navItem, pathname === '/home' && styles.activeNavItem]}>
+                  <Text style={[styles.navText, pathname === '/home' && styles.activeNavText]}>Home</Text>
+                </TouchableOpacity>
+              </Link>
+              
+              <Link href="/login" asChild>
+                <TouchableOpacity style={[styles.navItem, pathname === '/login' && styles.activeNavItem]}>
+                  <Text style={[styles.navText, pathname === '/login' && styles.activeNavText]}>Login</Text>
+                </TouchableOpacity>
+              </Link>
+              
+              <Link href="/signup" asChild>
+                <TouchableOpacity style={[styles.navItem, pathname === '/signup' && styles.activeNavItem]}>
+                  <Text style={[styles.navText, pathname === '/signup' && styles.activeNavText]}>Criar Conta</Text>
+                </TouchableOpacity>
+              </Link>
+            </>
+          )}
         </View>
       )}
 
@@ -76,32 +135,12 @@ const Header: React.FC = () => {
       >
         <Pressable style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
           <View style={styles.menuModal} onStartShouldSetResponder={() => true}>
-            <View style={styles.menuHeader}>
-              <Text style={styles.menuTitle}>Menu</Text>
-              <TouchableOpacity onPress={() => setMenuVisible(false)}>
+            <View style={styles.menuHeaderNoTitle}>
+              <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButtonContainer}>
                 <Text style={styles.closeButton}>✕</Text>
               </TouchableOpacity>
             </View>
-            
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/dashboard')}>
-              <Text style={styles.menuItemText}>Home</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/minha-conta')}>
-              <Text style={styles.menuItemText}>Minha Conta</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/investments')}>
-              <Text style={styles.menuItemText}>Investimentos</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('/(protected)/meus-cartoes')}>
-              <Text style={styles.menuItemText}>Meus Cartões</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={[styles.menuItem, styles.logoutMenuItem]} onPress={handleLogout}>
-              <Text style={styles.logoutText}>Sair</Text>
-            </TouchableOpacity>
+            {isAuthenticated ? renderAuthenticatedMenu() : renderUnauthenticatedMenu()}
           </View>
         </Pressable>
       </Modal>
@@ -221,6 +260,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     paddingVertical: 2,
+  },
+  menuHeaderNoTitle: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  closeButtonContainer: {
+    backgroundColor: '#e6f2f5',
+    borderRadius: 20,
+    padding: 6,
+    marginRight: 2,
+  },
+  closeButton: {
+    fontSize: 26,
+    color: '#004d61',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    lineHeight: 26,
   },
 });
 
