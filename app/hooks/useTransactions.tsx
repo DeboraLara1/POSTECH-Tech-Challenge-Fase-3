@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import { Transaction } from '../types/transaction';
 import { getTransactions, getTransactionIcon, getTransactionColor } from '../services/transactionService';
 import { cacheService } from '../../src/infrastructure/services/cacheService';
@@ -7,7 +7,10 @@ const CACHE_KEYS = {
   TRANSACTIONS: 'cache_transactions',
 };
 
-export const useTransactions = () => {
+// CONTEXT API
+const TransactionsContext = createContext<any>(null);
+
+export const TransactionsProvider = ({ children }: { children: ReactNode }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,13 +18,11 @@ export const useTransactions = () => {
   const fetchTransactions = async () => {
     try {
       const cachedTransactions = await cacheService.get<Transaction[]>(CACHE_KEYS.TRANSACTIONS);
-      
       if (cachedTransactions) {
         setTransactions(cachedTransactions);
         setLoading(false);
         return;
       }
-
       const data = getTransactions();
       await cacheService.set(CACHE_KEYS.TRANSACTIONS, data);
       setTransactions(data);
@@ -43,13 +44,9 @@ export const useTransactions = () => {
         ...newTransaction,
         id,
       };
-
       const updatedTransactions = [transaction, ...transactions];
-      
       await cacheService.set(CACHE_KEYS.TRANSACTIONS, updatedTransactions);
-      
       setTransactions(updatedTransactions);
-      
       return true;
     } catch (err) {
       setError('Erro ao adicionar transação');
@@ -60,13 +57,21 @@ export const useTransactions = () => {
   const getIcon = (type: Transaction['type']) => getTransactionIcon(type);
   const getColor = (type: Transaction['type']) => getTransactionColor(type);
 
-  return {
-    transactions,
-    loading,
-    error,
-    getIcon,
-    getColor,
-    addTransaction,
-    refreshTransactions: fetchTransactions
-  };
+  return (
+    <TransactionsContext.Provider value={{
+      transactions,
+      loading,
+      error,
+      getIcon,
+      getColor,
+      addTransaction,
+      refreshTransactions: fetchTransactions
+    }}>
+      {children}
+    </TransactionsContext.Provider>
+  );
+};
+
+export const useTransactions = () => {
+  return useContext(TransactionsContext);
 }; 
