@@ -12,7 +12,6 @@ const Header: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Considera mobile se a largura for menor que 768px
     setIsMobile(width < 768);
   }, [width]);
 
@@ -63,14 +62,12 @@ const Header: React.FC = () => {
         </View>
       )}
 
-      {/* Botão de menu hambúrguer - sempre visível em mobile */}
       <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
         <View style={styles.menuIcon}></View>
         <View style={styles.menuIcon}></View>
         <View style={styles.menuIcon}></View>
       </TouchableOpacity>
 
-      {/* Menu Sanduíche Modal */}
       <Modal
         animationType="slide"
         transparent={true}

@@ -1,6 +1,5 @@
 import { Transaction, TransactionType } from "../types/transaction";
 
-// Dados mockados das transações
 const mockTransactions: Transaction[] = [
   { id: 1, type: 'pix_in', description: 'PIX Recebido - João', value: '+ R$ 100,00', date: '06/07/2023', time: '12:35' },
   { id: 2, type: 'pix_out', description: 'PIX Enviado - Maria', value: '- R$ 75,00', date: '05/07/2023', time: '15:20' },

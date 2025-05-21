@@ -8,12 +8,13 @@ import {
   useWindowDimensions,
   Alert,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import * as DocumentPicker from "expo-document-picker";
+import { useTransactions } from "../../hooks/useTransactions";
 
 const CardNewTransaction = () => {
   const { width } = useWindowDimensions();
+  const { addTransaction, refreshTransactions } = useTransactions();
   const [selectedTransaction, setSelectedTransaction] = useState("");
   const [transactionValue, setTransactionValue] = useState("");
   const [selectedFile, setSelectedFile] =
@@ -25,25 +26,29 @@ const CardNewTransaction = () => {
       return;
     }
 
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('pt-BR');
+    const formattedTime = currentDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
     const transaction = {
-      type: selectedTransaction,
-      value: transactionValue,
-      fileName: selectedFile ? selectedFile.name : null, 
+      type: selectedTransaction === 'Depósito' ? 'pix_in' : 'pix_out',
+      description: `${selectedTransaction} - ${selectedFile ? selectedFile.name : 'Sem comprovante'}`,
+      value: `${selectedTransaction === 'Depósito' ? '+' : '-'} R$ ${transactionValue}`,
+      date: formattedDate,
+      time: formattedTime,
     };
 
     try {
-      const existingTransactions = await AsyncStorage.getItem("transactions");
-      const transactions = existingTransactions
-        ? JSON.parse(existingTransactions)
-        : [];
-
-      transactions.push(transaction);
-      await AsyncStorage.setItem("transactions", JSON.stringify(transactions));
-
-      Alert.alert("Transação", "Transação registrada com sucesso!");
-      setSelectedTransaction("");
-      setTransactionValue("");
-      setSelectedFile(null); 
+      const success = await addTransaction(transaction);
+      if (success) {
+        await refreshTransactions();
+        Alert.alert("Transação", "Transação registrada com sucesso!");
+        setSelectedTransaction("");
+        setTransactionValue("");
+        setSelectedFile(null);
+      } else {
+        Alert.alert("Erro", "Não foi possível salvar a transação.");
+      }
     } catch (error) {
       console.error("Erro ao salvar transação:", error);
       Alert.alert("Erro", "Não foi possível salvar a transação.");

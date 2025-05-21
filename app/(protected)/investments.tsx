@@ -1,12 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { ScrollView, SafeAreaView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { useCardStore } from '../../src/presentation/stores/useCardStore';
 
-// Lazy loading dos componentes
 const CardCenter = lazy(() => import('../components/cards/CardCenter'));
 const CardExtrato = lazy(() => import('../components/cards/CardExtrato'));
 const InvestmentStats = lazy(() => import('../components/investments/InvestmentStats'));
 
-// Componente de loading
 const LoadingComponent = () => (
   <View style={styles.loadingContainer}>
     <ActivityIndicator size="large" color="#004d61" />
@@ -14,11 +13,17 @@ const LoadingComponent = () => (
 );
 
 const Investments = () => {
+  const { cards, loading, error, fetchCards } = useCardStore();
+
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <Suspense fallback={<LoadingComponent />}>
-          <CardCenter />
+          <CardCenter cards={cards} loading={loading} error={error} />
         </Suspense>
         
         <Suspense fallback={<LoadingComponent />}>
@@ -39,14 +44,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   scrollView: {
-    flexGrow: 1,
-    padding: 16,
+    alignItems: 'center',
+    paddingVertical: 20,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 200,
   },
 });
 

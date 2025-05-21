@@ -14,7 +14,6 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Pré-carrega a imagem de login
   useEffect(() => {
     const preloadImage = async () => {
       try {
@@ -28,10 +27,8 @@ export default function Login() {
   }, []);
 
   const handleLogin = async () => {
-    // Limpa erro anterior
     setError('');
     
-    // Validações básicas
     if (!email || !password) {
       setError('Preencha todos os campos');
       return;

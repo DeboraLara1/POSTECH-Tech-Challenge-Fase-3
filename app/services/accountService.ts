@@ -5,7 +5,6 @@ interface AccountInfo {
   balance: string;
 }
 
-// Dados mockados da conta
 const accountInfo: AccountInfo = {
   bankCode: '0000',
   branchNumber: '0000',

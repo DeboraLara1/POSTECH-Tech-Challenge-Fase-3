@@ -6,7 +6,6 @@ interface CardInfo {
   expiryDate: string;
 }
 
-// Dados mockados do cartão
 const cardInfo: CardInfo = {
   type: 'MASTERCARD',
   category: 'DÉBITO',

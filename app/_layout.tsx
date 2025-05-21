@@ -9,10 +9,8 @@ import 'react-native-reanimated';
 import { AuthProvider } from '../context/AuthContext';
 import { useColorScheme } from './hooks/useColorScheme';
 
-// Impede o SplashScreen de esconder automaticamente
 SplashScreen.preventAutoHideAsync();
 
-// Componente de loading reutilizável
 const LoadingScreen = () => (
   <View style={styles.container}>
     <ActivityIndicator size="large" color="#004d61" />
@@ -32,13 +30,11 @@ export default function RootLayout() {
   useEffect(() => {
     async function prepareApp() {
       try {
-        // Pré-carrega as rotas principais
         const preloadRoutes = async () => {
           const routes = ['/login', '/(protected)/dashboard', '/(protected)/investments'];
           await Promise.all(routes.map(route => router.prefetch(route)));
         };
 
-        // Simular inicialização de recursos
         await Promise.all([
           new Promise(resolve => setTimeout(resolve, 1000)),
           preloadRoutes()
@@ -46,7 +42,6 @@ export default function RootLayout() {
       } catch (e) {
         console.warn(e);
       } finally {
-        // Indica que o app está pronto para renderizar
         setAppIsReady(true);
       }
     }
@@ -58,10 +53,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (appIsReady) {
-      // Esconde o SplashScreen quando tudo estiver pronto
       SplashScreen.hideAsync();
-      
-      // Navega para a tela de login
       router.replace('/login');
     }
   }, [appIsReady, router]);
@@ -69,7 +61,7 @@ export default function RootLayout() {
   if (!loaded || !appIsReady) {
     return <LoadingScreen />;
   }
-
+//debora.lara@fiap.com
   return (
     <AuthProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

@@ -1,118 +1,181 @@
-import React from 'react';
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
-import { getCardInfo } from '../../services/cardService';
+import React, { useMemo, memo } from 'react';
+import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native';
+import { Card } from '../../../src/domain/entities/Card';
 
-const CardMyCard: React.FC = () => {
-  const { width } = useWindowDimensions();
-  const cardInfo = getCardInfo();
+interface CardMyCardProps {
+  cards: Card[];
+  loading: boolean;
+  error: string | null;
+}
+
+const CardItem = memo(({ card, width }: { card: Card; width: number }) => {
+  const formattedNumber = useMemo(() => 
+    card.number.replace(/(\d{4})/g, '$1 ').trim(),
+    [card.number]
+  );
 
   return (
-    <View style={[styles.card, { width: width * 0.95 }]}>
-      <View style={styles.cardBody}>
-        <View style={styles.watermarkOne} />
-        <View style={styles.contentCard}>
-          <View style={styles.header}>
-            <Text style={styles.cardInfo}>{cardInfo.type}</Text>
-            <Text style={styles.cardInfo}>{cardInfo.category}</Text>
-          </View>
-          <View style={styles.middle}>
-            <View style={styles.chipImage} />
-            <Text style={styles.cardNumber}>{cardInfo.number}</Text>
-          </View>
-          <View style={styles.footer}>
-            <View>
-              <Text style={styles.cardHolder}>{cardInfo.holderName}</Text>
-              <Text style={styles.validUntil}>VÁLIDO ATÉ: {cardInfo.expiryDate}</Text>
-            </View>
-            <View style={styles.mastercardIcon} />
+    <View style={[styles.cardBox, { width: width * 0.92, alignSelf: 'center' }]}>
+      <Image source={require('../../../assets/png/Pixels3-card.png')} style={styles.bgImage} />
+      <View style={styles.cardContent}>
+        <Text style={styles.cardBrand}>Byte</Text>
+        <Text style={styles.cardType}>{card.type === 'credit' ? 'Platinum' : 'Débito'}</Text>
+        <Text style={styles.cardNumber}>{formattedNumber}</Text>
+        <View style={styles.cardFooter}>
+          <Text style={styles.cardHolder}>{card.holderName}</Text>
+          <Text style={styles.cardExpiry}>{card.expiryDate}</Text>
+        </View>
+        <View style={styles.cardActions}>
+          <Text style={styles.cardFunction}>Função: {card.type === 'credit' ? 'Débito/Crédito' : 'Débito'}</Text>
+          <View style={styles.actionsRight}>
+            <Text style={styles.configButton}>Configurar</Text>
+            <Text style={styles.blockButton}>Bloquear</Text>
           </View>
         </View>
-        <View style={styles.watermark} />
       </View>
+    </View>
+  );
+});
+
+const CardMyCard: React.FC<CardMyCardProps> = ({ cards, loading, error }) => {
+  const { width } = useWindowDimensions();
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.error}>{error}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Meus cartões</Text>
+      {cards.map((card) => (
+        <CardItem key={card.id} card={card} width={width} />
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#004d61',
-    borderRadius: 15,
-    marginTop: 20,
-    padding: 10,
-    alignSelf: 'center',
-  },
-  cardBody: {
+  container: {
     width: '100%',
+    padding: 0,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    marginLeft: 8,
+    color: '#222',
+  },
+  cardBox: {
+    backgroundColor: '#004d61',
+    borderRadius: 14,
+    marginBottom: 14,
+    overflow: 'hidden',
     position: 'relative',
-    padding: 16,
-    height: 200,
+    minHeight: 120,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
   },
-  watermarkOne: {
+  bgImage: {
     position: 'absolute',
-    right: -20,
-    top: -10,
-    width: 60,
-    height: 60,
-    opacity: 0.5,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 30,
+    right: 0,
+    top: 0,
+    width: '60%',
+    height: '100%',
+    opacity: 0.15,
+    resizeMode: 'cover',
   },
-  watermark: {
-    position: 'absolute',
-    left: -20,
-    bottom: -10,
-    width: 60,
-    height: 60,
-    opacity: 0.5,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 30,
+  cardContent: {
+    padding: 14,
+    zIndex: 2,
   },
-  contentCard: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cardInfo: {
+  cardBrand: {
     color: '#fff',
-    fontWeight: '600',
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 1,
   },
-  middle: {
-    marginVertical: 20,
-  },
-  chipImage: {
-    width: 50,
-    height: 40,
-    marginBottom: 10,
-    backgroundColor: '#e0a040',
-    borderRadius: 5,
+  cardType: {
+    color: '#fff',
+    fontSize: 12,
+    marginBottom: 8,
   },
   cardNumber: {
     color: '#fff',
-    fontSize: 18,
-    letterSpacing: 2,
+    fontSize: 15,
+    fontWeight: 'bold',
+    letterSpacing: 1.5,
+    marginBottom: 10,
   },
-  footer: {
+  cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    marginBottom: 6,
   },
   cardHolder: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
-  validUntil: {
+  cardExpiry: {
     color: '#fff',
-    fontSize: 10,
+    fontSize: 12,
   },
-  mastercardIcon: {
-    width: 50,
-    height: 30,
-    backgroundColor: '#ff5f00',
+  cardActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  cardFunction: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  actionsRight: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  configButton: {
+    backgroundColor: '#fff',
+    color: '#004d61',
+    fontWeight: 'bold',
     borderRadius: 5,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    marginRight: 6,
+    fontSize: 11,
+  },
+  blockButton: {
+    backgroundColor: '#e57373',
+    color: '#fff',
+    fontWeight: 'bold',
+    borderRadius: 5,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    fontSize: 11,
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
   },
 });
 
-export default CardMyCard; 
+export default memo(CardMyCard); 

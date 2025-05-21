@@ -1,100 +1,141 @@
-import React from 'react';
+import React, { useMemo, memo } from 'react';
 import { View, Text, Image, StyleSheet, useWindowDimensions } from 'react-native';
-import { getAccountInfo } from '../../services/accountService';
+import { Card } from '../../../src/domain/entities/Card';
 
-const CardCenter: React.FC = () => {
+interface CardCenterProps {
+  cards: Card[];
+  loading: boolean;
+  error: string | null;
+}
+
+const CardCenter: React.FC<CardCenterProps> = ({ cards, loading, error }) => {
   const { width } = useWindowDimensions();
-  const accountInfo = getAccountInfo();
+  const card = cards[0];
+
+  const formattedBalance = useMemo(() => 
+    card?.balance?.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) || '0,00',
+    [card?.balance]
+  );
+
+  const formattedNumber = useMemo(() => 
+    card?.number.replace(/(\d{4})/g, '$1 ').trim(),
+    [card?.number]
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.error}>{error}</Text>
+      </View>
+    );
+  }
+
+  if (!card) {
+    return null;
+  }
 
   return (
-    <View style={[styles.card, { width: width * 0.95 }]}>
-      <View style={styles.cardBody}>
-        <Image
-          source={require('../../../assets/png/Pixels3-card.png')}
-          style={styles.watermarkOne}
-        />
-        <View style={styles.contentCard}>
-          <View style={styles.account}>
-            <View style={styles.accountInfo}>
-              <Text style={styles.accountNumber}>Banco: {accountInfo.bankCode}</Text>
-              <Text style={styles.accountNumber}>Agência: {accountInfo.branchNumber}</Text>
-              <Text style={styles.accountNumber}>Conta: {accountInfo.accountNumber}</Text>
-            </View>
-            <View style={styles.accountBalance}>
-              <Text style={styles.accountBalanceLabel}>Saldo disponível</Text>
-              <Text style={styles.accountBalanceValue}>{accountInfo.balance}</Text>
-            </View>
-          </View>
+    <View style={[styles.cardBox, { width: width * 0.95 }]}>
+      <Image source={require('../../../assets/png/Pixels3-card.png')} style={styles.bgImage} />
+      <View style={styles.cardContent}>
+        <Text style={styles.hello}>Olá, Joana! :)</Text>
+        <Text style={styles.saldoLabel}>Saldo</Text>
+        <Text style={styles.saldoValue}>R$ {formattedBalance}</Text>
+        <Text style={styles.cardNumber}>{formattedNumber}</Text>
+        <View style={styles.cardFooter}>
+          <Text style={styles.cardHolder}>{card.holderName}</Text>
+          <Text style={styles.cardExpiry}>{card.expiryDate}</Text>
         </View>
-        <Image
-          source={require('../../../assets/png/Pixels3-card.png')}
-          style={styles.watermark}
-        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  cardBox: {
     backgroundColor: '#004d61',
-    borderRadius: 8,
-    marginTop: 20,
-    padding: 20,
-    alignSelf: 'center',
-  },
-  cardBody: {
-    width: '100%',
-    position: 'relative',
-    padding: 16,
-  },
-  watermarkOne: {
-    position: 'absolute',
-    right: -20,
-    top: -10,
-    width: 60,
-    height: 60,
-    opacity: 0.5,
-  },
-  watermark: {
-    position: 'absolute',
-    left: -20,
-    bottom: -10,
-    width: 60,
-    height: 60,
-    opacity: 0.5,
-  },
-  contentCard: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-  },
-  account: {
-    width: '100%',
-  },
-  accountInfo: {
+    borderRadius: 16,
     marginBottom: 20,
-  },
-  accountNumber: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#fff',
-  },
-  accountBalance: {
+    overflow: 'hidden',
+    position: 'relative',
+    minHeight: 180,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
     alignSelf: 'center',
   },
-  accountBalanceLabel: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#fff',
-    textAlign: 'center',
+  bgImage: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '60%',
+    height: '100%',
+    opacity: 0.18,
+    resizeMode: 'cover',
   },
-  accountBalanceValue: {
-    fontSize: 24,
-    fontWeight: '700',
+  cardContent: {
+    padding: 24,
+    zIndex: 2,
+  },
+  hello: {
     color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  saldoLabel: {
+    color: '#fff',
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  saldoValue: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  cardNumber: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    marginBottom: 12,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  cardHolder: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  cardExpiry: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  loadingContainer: {
+    width: '100%',
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  error: {
+    color: 'red',
     textAlign: 'center',
   },
 });
 
-export default CardCenter; 
+export default memo(CardCenter); 

@@ -10,7 +10,6 @@ export default function ProtectedLayout() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simula um tempo de carregamento para evitar redirecionamentos imediatos
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (!isAuthenticated) {

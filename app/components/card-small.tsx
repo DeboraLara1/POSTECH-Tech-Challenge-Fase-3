@@ -23,26 +23,26 @@ const CardSmall: React.FC<CardSmallProps> = ({ imageSource, titleCardSmall, onCa
 
 const styles = StyleSheet.create({
   card: {
-    width: width * 0.45, // 45% da largura da tela
-    height: width * 0.45, // Mantendo um formato quadrado proporcional
+    width: width * 0.45, 
+    height: width * 0.45, 
     alignItems: 'center',
     justifyContent: 'center',
-    margin: width * 0.05, // Margem de 5% da largura da tela
+    margin: width * 0.05, 
     backgroundColor: '#fff',
     borderRadius: 10,
     elevation: 3,
   },
   iconCardSmall: {
-    width: '40%', // 40% do tamanho do card
+    width: '40%', 
     height: '40%',
     marginTop: '10%',
   },
   cardBody: {
     marginTop: '5%',
-    width: '80%', // 80% da largura do card para o texto não ficar muito largo
+    width: '80%',
   },
   cardTitle: {
-    fontSize: width * 0.04, // Texto responsivo baseado na largura da tela
+    fontSize: width * 0.04, 
     fontWeight: 'bold',
     textAlign: 'center',
   },
