@@ -7,39 +7,39 @@ const Footer: React.FC = () => {
       <View style={styles.linksContainer}>
         <View style={styles.linkColumn}>
           <Text style={styles.columnTitle}>Institucional</Text>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/about')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Sobre nós</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/careers')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Carreiras</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/press')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Imprensa</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.linkColumn}>
           <Text style={styles.columnTitle}>Produtos</Text>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/accounts')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Contas</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/cards')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Cartões</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/investments')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Investimentos</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.linkColumn}>
           <Text style={styles.columnTitle}>Ajuda</Text>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/support')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Central de Ajuda</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/security')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Segurança</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://example.com/contact')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://github.com/DeboraLara1')}>
             <Text style={styles.link}>Contato</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,5 @@
 import { View, Text, Button, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { isValidEmail, isValidPassword } from '../utils/validations';
@@ -60,8 +59,16 @@ export default function Login() {
     }
   };
 
+  const handleBackToHome = () => {
+    router.replace('/home');
+  };
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={handleBackToHome}>
+        <Text style={styles.backButtonText}>← Voltar</Text>
+      </TouchableOpacity>
+
       {imageLoaded && (
         <Image 
           source={require('../../assets/png/Ilustração-cadastro.png')} 
@@ -113,6 +120,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
     backgroundColor: '#f5f5f5',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    padding: 8,
+  },
+  backButtonText: {
+    color: '#004d61',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   image: {
     alignSelf: 'center',

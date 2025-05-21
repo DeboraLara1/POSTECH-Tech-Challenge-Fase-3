@@ -31,7 +31,7 @@ export default function RootLayout() {
     async function prepareApp() {
       try {
         const preloadRoutes = async () => {
-          const routes = ['/login', '/(protected)/dashboard', '/(protected)/investments'];
+          const routes = ['/home', '/login', '/(protected)/dashboard', '/(protected)/investments'];
           await Promise.all(routes.map(route => router.prefetch(route)));
         };
 
@@ -54,7 +54,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (appIsReady) {
       SplashScreen.hideAsync();
-      router.replace('/login');
+      router.replace('/home');
     }
   }, [appIsReady, router]);
 
