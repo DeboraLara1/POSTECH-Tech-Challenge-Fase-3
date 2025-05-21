@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 
 import { AuthProvider } from '../context/AuthContext';
 import { useColorScheme } from './hooks/useColorScheme';
+import { TransactionsProvider } from './hooks/useTransactions';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -64,13 +65,15 @@ export default function RootLayout() {
 //debora.lara@fiap.com
   return (
     <AuthProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Suspense fallback={<LoadingScreen />}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </Suspense>
-      </ThemeProvider>
+      <TransactionsProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Suspense fallback={<LoadingScreen />}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </Suspense>
+        </ThemeProvider>
+      </TransactionsProvider>
     </AuthProvider>
   );
 }
